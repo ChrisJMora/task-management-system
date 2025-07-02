@@ -1,4 +1,8 @@
+# Nombre del workflow que se mostrará en la pestaña "Actions"
 name: Java CI and Publish Reports
+
+#Se ejecuta el workflow:
+# - Cada vez que se hace push a main
 
 on:
   push:
@@ -6,32 +10,40 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Permisos necesarios para publicar en GitHub Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read         # Permite leer el repositorio
+  pages: write           # Permite publicar en GitHub Pages
+  id-token: write        # Requerido para autenticación de Pages
 
+# Control de concurrencia: evita ejecuciones duplicadas innecesarias
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
+  # Job principal: compilar, testear y generar reportes
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Usa un runner de Ubuntu
 
     steps:
+      # Paso 1: Clona el repositorio
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Paso 2: Configura Java 11 (Temurin es la distribución recomendada)
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
 
+      # Paso 3: Compila, ejecuta pruebas y genera reportes HTML con Maven
       - name: Build, test and generate reports
         run: mvn clean verify site
 
+      # Paso 4: Reemplaza el archivo index.html con una versión personalizada
+      # Este HTML es la página principal con enlaces a los reportes
       - name: Create custom index.html
         run: |
           echo '<!DOCTYPE html>
@@ -50,22 +62,26 @@ jobs:
           </body>
           </html>' > target/site/index.html
 
+      # Paso 5: Configura GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
+      # Paso 6: Sube la carpeta target/site como artefacto para desplegar
       - name: Upload site to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'target/site'
 
+  # Job separado para el despliegue a GitHub Pages
   deploy:
-    needs: build
+    needs: build  # Solo se ejecuta si el job "build" fue exitoso
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      name: github-pages   # Usa el entorno especial de GitHub Pages
+      url: ${{ steps.deployment.outputs.page_url }}  # URL pública de la página
 
     steps:
+      # Paso final: despliega el sitio a GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
