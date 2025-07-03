@@ -7,7 +7,7 @@ import java.util.List;
 public class TaskManager {
     private final List tasks = new ArrayList<>();
 
-    public void addTask(final String task) {
+    public void AddTask(final String task) {
         tasks.add(task);
         System.out.println("Task added.");
     }
@@ -25,7 +25,7 @@ public class TaskManager {
 
     public static void main(final String[] args) {
         final TaskManager taskManager = new TaskManager();
-        taskManager.addTask("Complete project");
+        taskManager.AddTask("Complete project");
         taskManager.listTasks();
         taskManager.removeTask(1);
     }

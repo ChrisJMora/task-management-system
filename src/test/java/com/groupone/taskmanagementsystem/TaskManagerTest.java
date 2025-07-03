@@ -29,7 +29,7 @@ class TaskManagerTest {
     @Test
     void testAddTask() {
         // Test 1: Verificar mensaje de añadir tarea
-        taskManager.addTask("Test Task");
+        taskManager.AddTask("Test Task");
         final String addOutput = getOutputAndReset();
         assertTrue(addOutput.contains("Task added."), "Verificación mensaje de añadir tarea");
 
@@ -46,7 +46,7 @@ class TaskManagerTest {
     @Test
     void testRemoveTask() {
         // Preparación
-        taskManager.addTask("Task to Remove");
+        taskManager.AddTask("Task to Remove");
         resetOutput();
 
         // Ejecución y verificación
