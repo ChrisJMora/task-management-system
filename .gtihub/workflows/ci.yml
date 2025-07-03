@@ -1,87 +1,115 @@
-# Nombre del workflow que se mostrará en la pestaña "Actions"
-name: Java CI and Publish Reports
+# Nombre del workflow
+name: Validación de Pull Request y Despliegue de Reportes
 
-#Se ejecuta el workflow:
-# - Cada vez que se hace push a main
+# Descripción: Este workflow valida pull requests en la rama 'develop', ejecuta pruebas,
+# genera reportes con Maven (Checkstyle, PMD, JaCoCo, Javadoc) y los despliega en GitHub Pages.
 
-on:
-  push:
-    branches: ["develop"]
-  pull_request:
-  workflow_dispatch:
-
-# Permisos necesarios para publicar en GitHub Pages
+# Definición de permisos para el workflow, siguiendo el principio de privilegio mínimo
 permissions:
-  contents: read         # Permite leer el repositorio
-  pages: write           # Permite publicar en GitHub Pages
-  id-token: write        # Requerido para autenticación de Pages
+  contents: read      # Permiso para leer el contenido del repositorio
+  pages: write        # Permiso para escribir en GitHub Pages
+  id-token: write     # Permiso para autenticación con GitHub Pages
 
-# Control de concurrencia: evita ejecuciones duplicadas innecesarias
+# Evento que dispara el workflow
+on:
+  pull_request:
+    branches:
+      - develop
+    types:
+      - opened          # Se ejecuta al abrir un PR
+      - synchronize     # Se ejecuta al actualizar un PR
+      - reopened        # Se ejecuta al reabrir un PR
+
+# Cancelación de ejecuciones previas para optimizar recursos
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: pr-validation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
-  # Job principal: compilar, testear y generar reportes
-  build:
-    runs-on: ubuntu-latest  # Usa un runner de Ubuntu
+  # Job para validar el código y generar reportes
+  validate:
+    name: Validar Código y Generar Reportes
+    runs-on: ubuntu-latest
 
     steps:
-      # Paso 1: Clona el repositorio
-      - name: Checkout repository
+      # Paso 1: Clonar el repositorio
+      - name: Checkout del código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Obtiene el historial completo para análisis de cambios
+
+      # Paso 2: Configurar JDK 11
+      - name: Configurar JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'          # Versión especificada en el pom.xml
+          distribution: 'temurin'     # Distribución confiable de JDK
+          cache: 'maven'              # Habilita caché para dependencias de Maven
+
+      # Paso 3: Validar formato del código con Checkstyle
+      - name: Validar formato con Checkstyle
+        run: mvn checkstyle:check -B -f pom.xml
+        # Ejecuta la validación de Checkstyle según la configuración de google_checks.xml
+
+      # Paso 4: Ejecutar pruebas unitarias y generar reporte de cobertura con JaCoCo
+      - name: Ejecutar pruebas y cobertura
+        run: mvn test jacoco:report -B -f pom.xml
+        # Ejecuta pruebas unitarias con Surefire y genera reporte de cobertura con JaCoCo
+
+      # Paso 5: Validar reglas de PMD
+      - name: Validar reglas de PMD
+        run: mvn pmd:check -B -f pom.xml
+        # Ejecuta la verificación de PMD según las reglas definidas en el pom.xml
+
+      # Paso 6: Generar reportes con Maven Site
+      - name: Generar reportes con Maven Site
+        run: mvn site -B -f pom.xml
+        # Genera reportes de Checkstyle, PMD, JaCoCo y Javadoc para el sitio
+
+      # Paso 7: Guardar reportes como artefacto
+      - name: Guardar reportes como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven-site-reports
+          path: target/site
+          retention-days: 1 # Conserva los artefactos por 1 día
+
+  # Job para desplegar reportes en GitHub Pages
+  deploy:
+    name: Desplegar Reportes
+    runs-on: ubuntu-latest
+    needs: validate # Depende del job 'validate'
+    if: success()   # Solo se ejecuta si el job 'validate' tiene éxito
+
+    steps:
+      # Paso 1: Clonar el repositorio
+      - name: Checkout del código
         uses: actions/checkout@v4
 
-      # Paso 2: Configura Java 11 (Temurin es la distribución recomendada)
-      - name: Set up Java
-        uses: actions/setup-java@v3
+      # Paso 2: Descargar reportes generados
+      - name: Descargar reportes
+        uses: actions/download-artifact@v4
         with:
-          java-version: '11'
-          distribution: 'temurin'
+          name: maven-site-reports
+          path: target/site
+        # Descarga los reportes generados en el job 'validate'
 
-      # Paso 3: Compila, ejecuta pruebas y genera reportes HTML con Maven
-      - name: Build, test and generate reports
-        run: mvn clean verify site
-
-      # Paso 4: Reemplaza el archivo index.html con una versión personalizada
-      # Este HTML es la página principal con enlaces a los reportes
-      - name: Create custom index.html
+      # Paso 3: Validar contenido de reportes
+      - name: Validar reportes generados
         run: |
-          echo '<!DOCTYPE html>
-          <html lang="es">
-          <head>
-            <meta charset="UTF-8">
-            <title>Reportes de Calidad - Java CI Demo</title>
-          </head>
-          <body>
-            <h1>Reportes de Calidad</h1>
-            <ul>
-              <li><a href="checkstyle.html">Ver reporte Checkstyle</a></li>
-              <li><a href="pmd.html">Ver reporte PMD</a></li>
-              <li><a href="jacoco/index.html">Ver reporte JaCoCo</a></li>
-            </ul>
-          </body>
-          </html>' > target/site/index.html
+          if [ ! -d "target/site" ] || [ -z "$(ls -A target/site)" ]; then
+            echo "Error: Directorio target/site está vacío o no existe."
+            exit 1
+          fi
+        # Verifica que el directorio target/site no esté vacío antes de desplegar
 
-      # Paso 5: Configura GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      # Paso 6: Sube la carpeta target/site como artefacto para desplegar
-      - name: Upload site to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+      # Paso 4: Desplegar en GitHub Pages
+      - name: Desplegar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4 # Versión específica para estabilidad
         with:
-          path: 'target/site'
-
-  # Job separado para el despliegue a GitHub Pages
-  deploy:
-    needs: build  # Solo se ejecuta si el job "build" fue exitoso
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages   # Usa el entorno especial de GitHub Pages
-      url: ${{ steps.deployment.outputs.page_url }}  # URL pública de la página
-
-    steps:
-      # Paso final: despliega el sitio a GitHub Pages
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/site
+          keep_files: false              # Sobrescribe el contenido existente
+          force_orphan: true             # Crea un nuevo historial para la rama gh-pages
+          destination_dir: pr-${{ github.event.pull_request.number }}
+          # Despliega en un subdirectorio único por PR
