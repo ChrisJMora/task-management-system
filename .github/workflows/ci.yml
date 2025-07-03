@@ -85,6 +85,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate # Depende del job 'validate'
     if: always()
+    permissions:
+      pages: write  # Permiso adicional requerido para deploy-pages
+      id-token: write
 
     steps:
       # Paso 1: Clonar el repositorio
@@ -99,22 +102,20 @@ jobs:
           path: target/site
         # Descarga los reportes generados en el job 'validate'
 
-      # Paso 3: Validar contenido de reportes
-      - name: Validar reportes generados
-        run: |
-          if [ ! -d "target/site" ] || [ -z "$(ls -A target/site)" ]; then
-            echo "Error: Directorio target/site está vacío o no existe."
-            exit 1
-          fi
-        continue-on-error: true
+      # Paso 3: Configurar GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        # Configura el entorno para despliegue oficial de Pages
 
-      # Paso 4: Desplegar en GitHub Pages
-      - name: Desplegar en GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4 # Versión específica para estabilidad
+      # Paso 4: Subir artefacto a Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          publish_dir: target/site
-          keep_files: false              # Sobrescribe el contenido existente
-          force_orphan: true             # Crea un nuevo historial para la rama gh-pages
-          destination_dir: pr-${{ github.event.pull_request.number }}
-          # Despliega en un subdirectorio único por PR
-        if: always()
+          path: 'target/site'  # Ruta donde están los reportes
+          # Nota: GitHub Pages publicará automáticamente este contenido
+
+      # Paso 5: Desplegar en GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        # Este action maneja internamente el despliegue sin necesidad de PAT
+        # y genera una URL única bajo el dominio de GitHub Pages
