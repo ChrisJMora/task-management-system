@@ -28,7 +28,7 @@ concurrency:
 jobs:
   # Job de validación estricta: falla si Checkstyle, PMD o cobertura no se cumplen
   validate:
-    name: Validaciones Estrictas
+    name: Validaciones de Código Estático
     runs-on: ubuntu-latest
 
     steps:
