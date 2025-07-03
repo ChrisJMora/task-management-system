@@ -89,10 +89,11 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      # Paso 3: Ejecutar verificación completa y generación de reportes
+      # Paso 3: Ejecutar verificación completa y generación de reportes, ignorando errores
       - name: Generar reportes (PMD, Checkstyle, JaCoCo, etc.)
-        run: mvn verify site -B -f pom.xml -DfailOnViolation=false
-        # Ejecuta análisis completo y genera todos los reportes sin fallar el job
+        run: mvn verify site -B -f pom.xml
+        continue-on-error: true
+        # Aunque falle por violaciones, continúa con el despliegue
 
       # Paso 4: Subir reportes generados como artefacto para GitHub Pages
       - name: Subir reportes para despliegue
