@@ -9,7 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-//@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
+@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
 class TaskManagerTest {
 
     private TaskManager taskManager;
