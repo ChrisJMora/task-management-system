@@ -91,7 +91,7 @@ jobs:
 
       # Paso 3: Ejecutar verificación completa y generación de reportes, ignorando errores
       - name: Generar reportes (PMD, Checkstyle, JaCoCo, etc.)
-        run: mvn verify site -B -f pom.xml
+        run: mvn site verify -B -f pom.xml
         continue-on-error: true
         # Aunque falle por violaciones, continúa con el despliegue
 
