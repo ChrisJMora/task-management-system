@@ -2,7 +2,7 @@
 name: Validación de Pull Request y Despliegue de Reportes
 
 # Descripción: Este workflow valida pull requests en la rama 'develop' con Checkstyle, PMD y umbral mínimo de cobertura JaCoCo,
-# luego genera y despliega reportes completos en GitHub Pages.
+# luego genera y despliega reportes completos en GitHub Pages, incluyendo violaciones de PMD en pmd.html.
 
 # Definición de permisos para el workflow, siguiendo el principio de privilegio mínimo
 permissions:
@@ -99,10 +99,10 @@ jobs:
         run: mvn checkstyle:checkstyle -B -f pom.xml
         # Genera reporte HTML de Checkstyle aunque haya violaciones
 
-      # Paso 5: Generar reporte de PMD
+      # Paso 5: Generar reporte de PMD con violaciones
       - name: Generar reporte PMD
-        run: mvn pmd:pmd -B -f pom.xml
-        # Genera reporte HTML de PMD aunque haya violaciones
+        run: mvn pmd:pmd pmd:cpd -B -f pom.xml
+        # Genera reportes HTML de PMD y CPD
 
       # Paso 6: Generar reporte de Javadoc y consolidar con Maven Site
       - name: Generar reportes consolidados
