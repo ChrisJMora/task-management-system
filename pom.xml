@@ -181,20 +181,32 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+
                 <configuration>
                     <excludes>
                         <exclude>com/groupone/taskmanagementsystem/MainApp.class</exclude>
                     </excludes>
+                    <rules>
+                        <rule>
+                            <element>BUNDLE</element>
+                            <limits>
+                                <limit>
+                                    <counter>INSTRUCTION</counter>
+                                    <value>COVEREDRATIO</value>
+                                    <minimum>0.70</minimum>
+                                </limit>
+                            </limits>
+                        </rule>
+                    </rules>
                 </configuration>
+
                 <executions>
-                    <!-- Inyecta el agente de cobertura antes de pruebas -->
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
 
-                    <!-- Genera reporte HTML en la fase de test -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
@@ -203,30 +215,16 @@
                         </goals>
                     </execution>
 
-                    <!-- Verifica cobertura en fase verify -->
                     <execution>
                         <id>check</id>
-                        <phase>verify</phase> <!-- IMPORTANTE -->
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>INSTRUCTION</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.70</minimum>
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
+
 
 
             <!-- 7. JAVADOC -->
