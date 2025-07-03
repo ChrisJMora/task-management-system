@@ -3,11 +3,12 @@ package com.groupone.taskmanagementsystem;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public class TaskManager {
-    private List tasks = new ArrayList<>();
+    private final List tasks = new ArrayList<>();
 
-    public void addTask(String t) {
-        tasks.add(t);
+    public void addTask(final String task) {
+        tasks.add(task);
         System.out.println("Task added.");
     }
 
@@ -17,16 +18,16 @@ public class TaskManager {
         }
     }
 
-    public void removeTask(int id) {
-        tasks.remove(id - 1);
+    public void removeTask(final int taskId) {
+        tasks.remove(taskId - 1);
         System.out.println("Task removed.");
     }
 
-    public static void main(String[] args) {
-        TaskManager tm = new TaskManager();
-        tm.addTask("Complete project");
-        tm.listTasks();
-        tm.removeTask(1);
+    public static void main(final String[] args) {
+        final TaskManager taskManager = new TaskManager();
+        taskManager.addTask("Complete project");
+        taskManager.listTasks();
+        taskManager.removeTask(1);
     }
 }
 
