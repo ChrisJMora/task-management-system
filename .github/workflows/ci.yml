@@ -110,7 +110,11 @@ jobs:
 
       # Paso 4: Desplegar en GitHub Pages
       - name: Desplegar en GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-        # Despliega en un subdirectorio único por PR
+        uses: peaceiris/actions-gh-pages@v4 # Versión específica para estabilidad
+        with:
+          publish_dir: target/site
+          keep_files: false              # Sobrescribe el contenido existente
+          force_orphan: true             # Crea un nuevo historial para la rama gh-pages
+          destination_dir: pr-${{ github.event.pull_request.number }}
+          # Despliega en un subdirectorio único por PR
         if: always()
