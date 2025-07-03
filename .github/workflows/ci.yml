@@ -53,7 +53,7 @@ jobs:
 
       # Paso 4: Ejecutar pruebas y verificar cobertura
       - name: Verificar cobertura de código
-        run: mvn test jacoco:check -B -f pom.xml
+        run: mvn verify jacoco:check -B -f pom.xml
         # Falla si la cobertura no alcanza el umbral mínimo configurado
 
       # Paso 5: Validar reglas de PMD
