@@ -3,7 +3,7 @@ package com.groupone.taskmanagementsystem;
 public class Task {
     private String nombre;
 
-    public Task(String nombre) {
+    public Task(final String nombre) {
         this.nombre = nombre;
     }
 
@@ -11,7 +11,7 @@ public class Task {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(final String nombre) {
         this.nombre = nombre;
     }
 
