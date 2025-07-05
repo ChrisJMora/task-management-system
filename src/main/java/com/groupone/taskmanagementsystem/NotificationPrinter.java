@@ -4,69 +4,71 @@ public class NotificationPrinter implements INotificationPrinter {
 
     private static final String ID_LABEL = "ID";
 
-    private final Identifiable entity;
-    private final IConsoleOutput consoleOutput;
+    private final IConsoleOutput console;
 
-    public NotificationPrinter(final Identifiable entity, final IConsoleOutput consoleOutput) {
-        this.entity = entity;
-        this.consoleOutput = consoleOutput;
+    private final String entityName;
+
+    public NotificationPrinter(final String entityName) {
+        this.console = new SystemOutConsoleOutput();
+        this.entityName = entityName;
     }
 
-    public NotificationPrinter(final Identifiable entity) {
-        this(entity, new SystemOutConsoleOutput());
+    public NotificationPrinter(final String entityName, final IConsoleOutput console) {
+        this.console = console;
+        this.entityName = entityName;
     }
 
-    private String getEntityNameWithId() {
-        return entity.getEntityName() + " con " + ID_LABEL + " " + entity.getEntityIndex();
+    private String getEntityNameWithId(final int entityIndex) {
+        return entityName + " con " + ID_LABEL + " " + entityIndex;
     }
 
     @Override
     public void printCreateSuccess() {
-        consoleOutput.printMessage(entity.getEntityName() + " creada con éxito.");
+        console.print(entityName + " creada con éxito.");
     }
 
     @Override
     public void printCreateFailure(final String reason) {
-        consoleOutput.printMessage("Error al crear " + entity.getEntityName() + ": " + reason);
+        console.print("Error al crear " + entityName + ": " + reason);
     }
 
     @Override
     public void printReadSuccess() {
-        consoleOutput.printMessage(getEntityNameWithId() + " encontrada.");
+        console.print(entityName + " encontrada.");
     }
 
     @Override
-    public void printReadFailure() {
-        consoleOutput.printMessage("No existe " + getEntityNameWithId() + ".");
+    public void printReadFailure(final int entityIndex) {
+        console.print("No existe " + getEntityNameWithId(entityIndex) + ".");
     }
 
     @Override
-    public void printUpdateSuccess() {
-        consoleOutput.printMessage(getEntityNameWithId() + " actualizada con éxito.");
+    public void printUpdateSuccess(final int entityIndex) {
+        console.print(getEntityNameWithId(entityIndex) + " actualizada con éxito.");
     }
 
     @Override
-    public void printUpdateFailure(final String reason) {
-        consoleOutput.printMessage("Error al actualizar " + getEntityNameWithId() + ": " + reason);
+    public void printUpdateFailure(final int entityIndex, final String reason) {
+        console.print("Error al actualizar " + getEntityNameWithId(entityIndex) + ": " + reason);
     }
 
     @Override
-    public void printDeleteSuccess() {
-        consoleOutput.printMessage(getEntityNameWithId() + " eliminada correctamente.");
+    public void printDeleteSuccess(final int entityIndex) {
+        console.print(getEntityNameWithId(entityIndex) + " eliminada correctamente.");
     }
 
     @Override
-    public void printDeleteFailure() {
-        consoleOutput.printMessage("No se pudo eliminar " + getEntityNameWithId() + ". Puede que no exista.");
+    public void printDeleteFailure(final int entityIndex, final String reason) {
+        console.print("No se pudo eliminar " + getEntityNameWithId(entityIndex) + ": " + reason);
     }
 
     @Override
     public void printListEmpty() {
-        consoleOutput.printMessage("No hay " + entity.getEntityName() + "s para mostrar.");
+        console.print("No hay tareas para mostrar.");
     }
 
     @Override
     public void printListSuccess(final int count) {
-        consoleOutput.printMessage("Se encontraron " + count + " " + entity.getEntityName() + "s.");
+        console.print("Se encontraron " + count + " " + entityName + "s.");
     }
 }

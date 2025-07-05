@@ -8,18 +8,17 @@ public interface INotificationPrinter {
 
     void printReadSuccess();
 
-    void printReadFailure();
+    void printReadFailure(int entityIndex);
 
-    void printUpdateSuccess();
+    void printUpdateSuccess(int entityIndex);
 
-    void printUpdateFailure(String reason);
+    void printUpdateFailure(int entityIndex, String reason);
 
-    void printDeleteSuccess();
+    void printDeleteSuccess(int entityIndex);
 
-    void printDeleteFailure();
+    void printDeleteFailure(int entityIndex, String reason);
 
     void printListEmpty();
 
     void printListSuccess(int count);
 }
-
