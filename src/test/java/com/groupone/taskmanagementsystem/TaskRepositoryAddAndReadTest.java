@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
 class TaskRepositoryAddAndReadTest {
 
-    private static final String TASK_NAME_NEW = "Nueva tarea";
-    private static final String TASK_NAME_SAMPLE = "Tarea A";
+    private static final TaskItem TASK_SAMPLE = new TaskItem("Tarea A");
 
     private TaskRepository repository;
 
@@ -23,22 +22,22 @@ class TaskRepositoryAddAndReadTest {
 
     @Test
     void testAddTaskReturnsTrue() {
-        final boolean result = repository.addTask(TASK_NAME_NEW);
+        final boolean result = repository.addTask(TASK_SAMPLE);
         assertTrue(result, "La tarea debería agregarse correctamente");
     }
 
     @Test
     void testAddTaskStoresCorrectName() {
-        repository.addTask(TASK_NAME_NEW);
+        repository.addTask(TASK_SAMPLE);
         final String taskName = repository.getTaskByIndex(0)
                 .orElseThrow()
                 .getTaskTitle();
-        assertEquals(TASK_NAME_NEW, taskName, "El nombre almacenado no coincide con el esperado");
+        assertEquals(TASK_SAMPLE.getTaskTitle(), taskName, "El nombre almacenado no coincide con el esperado");
     }
 
     @Test
     void testAddTaskStoresCorrectIndex() {
-        repository.addTask(TASK_NAME_NEW);
+        repository.addTask(TASK_SAMPLE);
         final int taskIndex = repository.getTaskByIndex(0)
                 .orElseThrow()
                 .getEntityIndex();
@@ -47,18 +46,18 @@ class TaskRepositoryAddAndReadTest {
 
     @Test
     void testGetTaskByIndexWhenExistsReturnsPresent() {
-        repository.addTask(TASK_NAME_SAMPLE);
+        repository.addTask(TASK_SAMPLE);
         final Optional<TaskItem> result = repository.getTaskByIndex(0);
         assertTrue(result.isPresent(), "La tarea debería estar presente en el índice 0");
     }
 
     @Test
     void testGetTaskByIndexWhenExistsHasCorrectName() {
-        repository.addTask(TASK_NAME_SAMPLE);
+        repository.addTask(TASK_SAMPLE);
         final String taskName = repository.getTaskByIndex(0)
                 .orElseThrow()
                 .getTaskTitle();
-        assertEquals(TASK_NAME_SAMPLE, taskName, "El nombre de la tarea no coincide con el esperado");
+        assertEquals(TASK_SAMPLE.getTaskTitle(), taskName, "El nombre de la tarea no coincide con el esperado");
     }
 
     @Test
@@ -68,8 +67,8 @@ class TaskRepositoryAddAndReadTest {
     }
 
     @Test
-    void testGetAllTasksReturnsCopy() {
-        repository.addTask(TASK_NAME_SAMPLE);
+    void testGetAllTasksReturnsCopyDoesNotAffectOriginal() {
+        repository.addTask(TASK_SAMPLE);
         final List<TaskItem> copy = repository.getAllTasks();
         copy.clear();
         final int size = repository.getAllTasks().size();

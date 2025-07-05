@@ -10,23 +10,27 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
 class TaskRepositoryUpdateAndRemoveTest {
 
+    private static final TaskItem TASK = new TaskItem("Tarea de prueba");
+
     private TaskRepository repository;
 
     @BeforeEach
     void setUp() {
         repository = new TaskRepository();
+        TASK.setTitle("Tarea de prueba");
+        TASK.setEntityIndex(0); // Por si se modifica en algún momento
     }
 
     @Test
     void testUpdateTaskByIndexReturnsPresent() {
-        repository.addTask("Antigua");
+        repository.addTask(TASK);
         final Optional<TaskItem> result = repository.updateTaskByIndex(0, "Actualizada");
         assertTrue(result.isPresent(), "La tarea debería actualizarse si el índice existe");
     }
 
     @Test
     void testUpdateTaskByIndexChangesName() {
-        repository.addTask("Antigua");
+        repository.addTask(TASK);
         repository.updateTaskByIndex(0, "Actualizada");
         final String updatedName = repository.getTaskByIndex(0)
                 .orElseThrow()
@@ -42,14 +46,14 @@ class TaskRepositoryUpdateAndRemoveTest {
 
     @Test
     void testRemoveTaskByIndexReturnsTrueIfExists() {
-        repository.addTask("Eliminar");
+        repository.addTask(TASK);
         final boolean result = repository.removeTaskByIndex(0);
         assertTrue(result, "La tarea debería eliminarse correctamente si existe");
     }
 
     @Test
     void testRemoveTaskByIndexActuallyRemoves() {
-        repository.addTask("Eliminar");
+        repository.addTask(TASK);
         repository.removeTaskByIndex(0);
         final boolean isEmpty = repository.getAllTasks().isEmpty();
         assertTrue(isEmpty, "La tarea no fue eliminada de la lista");
