@@ -20,20 +20,20 @@ class TaskItemTest {
     @Test
     void testConstructorAndGetter() {
         final TaskItem task = new TaskItem("Leer libro de calidad");
-        assertEquals("Leer libro de calidad", task.getNombre(), "El nombre debe coincidir con el pasado al constructor");
+        assertEquals("Leer libro de calidad", task.getName(), "El nombre debe coincidir con el pasado al constructor");
     }
 
     @Test
     void testSetter() {
         final TaskItem task = new TaskItem("Tarea inicial");
-        task.setNombre("Tarea modificada");
-        assertEquals("Tarea modificada", task.getNombre(), "El nombre debe reflejar el valor actualizado con el setter");
+        task.setName("Tarea modificada");
+        assertEquals("Tarea modificada", task.getName(), "El nombre debe reflejar el valor actualizado con el setter");
     }
 
     @Test
     void testToString() {
         final TaskItem task = new TaskItem("Escribir test");
-        final String expected = "TaskItem{nombre='Escribir test'}";
+        final String expected = "TaskItem{id='0'nombre='Escribir test'}";
         assertEquals(expected, task.toString(), "El método toString debe seguir el formato TaskItem{nombre='...'}");
     }
 }

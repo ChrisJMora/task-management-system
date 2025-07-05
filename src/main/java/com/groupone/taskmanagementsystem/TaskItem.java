@@ -1,24 +1,32 @@
 package com.groupone.taskmanagementsystem;
 
 public class TaskItem {
-    private String nombre;
+
+    private int taskId;
+
+    private String name;
 
     public TaskItem(final String nombre) {
-        this.nombre = nombre;
+        this.name = nombre;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getTaskId() {
+        return taskId;
     }
 
-    public void setNombre(final String nombre) {
-        this.nombre = nombre;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "TaskItem{" +
-                "nombre='" + nombre + '\'' +
+                "id='" + taskId + '\'' +
+                "nombre='" + name + '\'' +
                 '}';
     }
 }
