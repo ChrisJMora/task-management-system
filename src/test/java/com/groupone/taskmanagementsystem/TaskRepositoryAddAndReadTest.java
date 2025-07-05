@@ -32,7 +32,7 @@ class TaskRepositoryAddAndReadTest {
         repository.addTask(TASK_NAME_NEW);
         final String taskName = repository.getTaskByIndex(0)
                 .orElseThrow()
-                .getName();
+                .getTaskTitle();
         assertEquals(TASK_NAME_NEW, taskName, "El nombre almacenado no coincide con el esperado");
     }
 
@@ -41,7 +41,7 @@ class TaskRepositoryAddAndReadTest {
         repository.addTask(TASK_NAME_NEW);
         final int taskIndex = repository.getTaskByIndex(0)
                 .orElseThrow()
-                .getIndex();
+                .getEntityIndex();
         assertEquals(0, taskIndex, "El índice de la primera tarea debería ser 0");
     }
 
@@ -57,7 +57,7 @@ class TaskRepositoryAddAndReadTest {
         repository.addTask(TASK_NAME_SAMPLE);
         final String taskName = repository.getTaskByIndex(0)
                 .orElseThrow()
-                .getName();
+                .getTaskTitle();
         assertEquals(TASK_NAME_SAMPLE, taskName, "El nombre de la tarea no coincide con el esperado");
     }
 

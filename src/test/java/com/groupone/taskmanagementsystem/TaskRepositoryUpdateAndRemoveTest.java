@@ -30,7 +30,7 @@ class TaskRepositoryUpdateAndRemoveTest {
         repository.updateTaskByIndex(0, "Actualizada");
         final String updatedName = repository.getTaskByIndex(0)
                 .orElseThrow()
-                .getName();
+                .getTaskTitle();
         assertEquals("Actualizada", updatedName, "El nombre de la tarea no se actualizó correctamente");
     }
 
