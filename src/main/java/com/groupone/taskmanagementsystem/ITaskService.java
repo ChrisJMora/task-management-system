@@ -10,8 +10,8 @@ public interface ITaskService {
 
     boolean addTask(TaskItem newTask);
 
-    TaskItem updateTaskByIndex(int taskIndex);
+    TaskItem updateTaskByIndex(int taskIndex, String newTaskName);
 
-    boolean removeTaskByIndex(int taskIndex);
+    TaskItem removeTaskByIndex(int taskIndex);
 
 }
