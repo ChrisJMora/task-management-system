@@ -31,7 +31,8 @@ class SystemOutConsoleOutputTest {
 
         // Comprobar que la salida contiene el mensaje esperado seguido de salto de línea
         assertEquals(testMessage + System.lineSeparator(),
-                outContent.toString(),"Comprobar salida");
+                outContent.toString(), "El mensaje de salida no es el esperado");
+
     }
 
     @AfterEach
