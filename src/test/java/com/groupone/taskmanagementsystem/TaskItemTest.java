@@ -8,9 +8,14 @@ import org.junit.jupiter.api.Test;
 class TaskItemTest {
 
     @Test
-    void testConstructorAndGetter() {
+    void testConstructorSetsId() {
         final TaskItem task = new TaskItem(1, "Leer libro de calidad");
         assertEquals(1, task.getIndex(), "El ID debe coincidir con el pasado al constructor");
+    }
+
+    @Test
+    void testConstructorSetsName() {
+        final TaskItem task = new TaskItem(1, "Leer libro de calidad");
         assertEquals("Leer libro de calidad", task.getName(), "El nombre debe coincidir con el pasado al constructor");
     }
 
