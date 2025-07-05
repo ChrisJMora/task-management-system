@@ -10,20 +10,20 @@ class TaskItemTest {
     @Test
     void testConstructorSetsId() {
         final TaskItem task = new TaskItem(1, "Leer libro de calidad");
-        assertEquals(1, task.getIndex(), "El ID debe coincidir con el pasado al constructor");
+        assertEquals(1, task.getEntityIndex(), "El ID debe coincidir con el pasado al constructor");
     }
 
     @Test
     void testConstructorSetsName() {
         final TaskItem task = new TaskItem(1, "Leer libro de calidad");
-        assertEquals("Leer libro de calidad", task.getName(), "El nombre debe coincidir con el pasado al constructor");
+        assertEquals("Leer libro de calidad", task.getEntityName(), "El nombre debe coincidir con el pasado al constructor");
     }
 
     @Test
     void testSetter() {
         final TaskItem task = new TaskItem(2, "Tarea inicial");
-        task.setName("Tarea modificada");
-        assertEquals("Tarea modificada", task.getName(), "El nombre debe reflejar el valor actualizado con el setter");
+        task.setTitle("Tarea modificada");
+        assertEquals("Tarea modificada", task.getEntityName(), "El nombre debe reflejar el valor actualizado con el setter");
     }
 
     @Test
