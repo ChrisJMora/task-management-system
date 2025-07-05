@@ -1,26 +1,29 @@
 package com.groupone.taskmanagementsystem;
 
+import org.apache.commons.lang3.StringUtils;
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public class DefaultTaskValidator implements TaskValidator {
 
+  
+
     @Override
-    public boolean isTitleValid(TaskItem task) {
-        return task.getName() != null && !task.getName().trim().isEmpty();
+    public boolean isTitleValid(final TaskItem task) {
+        final String name = task.getName();
+        return name != null && !StringUtils.isBlank(name);
     }
 
     @Override
-    public boolean isDueDateValid(TaskItem task) {
-        // No se puede validar si TaskItem no tiene fecha
+    public boolean isDueDateValid(final TaskItem task) {
         return true;
     }
 
     @Override
-    public boolean isPriorityValid(TaskItem task) {
-        // No se puede validar si TaskItem no tiene prioridad
+    public boolean isPriorityValid(final TaskItem task) {
         return true;
     }
 
     @Override
-    public boolean isValid(TaskItem task) {
-        return isTitleValid(task); // Solo valida el nombre
+    public boolean isValid(final TaskItem task) {
+        return isTitleValid(task);
     }
 }
