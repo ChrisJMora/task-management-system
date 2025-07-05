@@ -4,11 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 @SuppressWarnings("PMD.AtLeastOneConstructor")
 public class DefaultTaskValidator implements TaskValidator {
 
-  
-
     @Override
     public boolean isTitleValid(final TaskItem task) {
-        final String name = task.getName();
+        final String name = task.getTaskTitle();
         return name != null && !StringUtils.isBlank(name);
     }
 

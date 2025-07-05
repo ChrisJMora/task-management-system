@@ -23,7 +23,7 @@ public class TaskItem implements Identifiable {
         return entityIndex;
     }
 
-    public void setEntityIndex(int entityIndex) {
+    public void setEntityIndex(final int entityIndex) {
         this.entityIndex = entityIndex;
     }
 
