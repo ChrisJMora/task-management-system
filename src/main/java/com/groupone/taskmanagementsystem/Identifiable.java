@@ -1,6 +1,6 @@
 package com.groupone.taskmanagementsystem;
 
 public interface Identifiable {
-    int getId();
+    int getIndex();
     String getName();
 }

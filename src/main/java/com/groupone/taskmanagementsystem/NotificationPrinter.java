@@ -17,7 +17,7 @@ public class NotificationPrinter implements INotificationPrinter {
     }
 
     private String getEntityNameWithId() {
-        return entity.getName() + " con " + ID_LABEL + " " + entity.getId();
+        return entity.getName() + " con " + ID_LABEL + " " + entity.getIndex();
     }
 
     @Override
