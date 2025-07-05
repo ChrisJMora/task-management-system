@@ -1,32 +1,34 @@
 package com.groupone.taskmanagementsystem;
 
-public class TaskItem {
+public class TaskItem implements Identifiable {
 
     private int taskId;
 
-    private String name;
+    private String taskName;
 
     public TaskItem(final String nombre) {
-        this.name = nombre;
+        this.taskName = nombre;
     }
 
-    public int getTaskId() {
+    @Override
+    public int getId() {
         return taskId;
     }
 
+    @Override
     public String getName() {
-        return name;
+        return taskName;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setName(final String taskName) {
+        this.taskName = taskName;
     }
 
     @Override
     public String toString() {
         return "TaskItem{" +
                 "id='" + taskId + '\'' +
-                "nombre='" + name + '\'' +
+                "nombre='" + taskName + '\'' +
                 '}';
     }
 }
