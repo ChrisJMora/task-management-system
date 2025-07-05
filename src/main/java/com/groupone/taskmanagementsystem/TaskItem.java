@@ -4,29 +4,29 @@ public class TaskItem {
 
     private int taskId;
 
-    private String nombre;
+    private String name;
 
     public TaskItem(final String nombre) {
-        this.nombre = nombre;
+        this.name = nombre;
     }
 
     public int getTaskId() {
         return taskId;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(final String nombre) {
-        this.nombre = nombre;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "TaskItem{" +
                 "id='" + taskId + '\'' +
-                "nombre='" + nombre + '\'' +
+                "nombre='" + name + '\'' +
                 '}';
     }
 }
