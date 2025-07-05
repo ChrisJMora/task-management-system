@@ -17,17 +17,17 @@ public class NotificationPrinter implements INotificationPrinter {
     }
 
     private String getEntityNameWithId() {
-        return entity.getName() + " con " + ID_LABEL + " " + entity.getIndex();
+        return entity.getEntityName() + " con " + ID_LABEL + " " + entity.getEntityIndex();
     }
 
     @Override
     public void printCreateSuccess() {
-        consoleOutput.printMessage(entity.getName() + " creada con éxito.");
+        consoleOutput.printMessage(entity.getEntityName() + " creada con éxito.");
     }
 
     @Override
     public void printCreateFailure(final String reason) {
-        consoleOutput.printMessage("Error al crear " + entity.getName() + ": " + reason);
+        consoleOutput.printMessage("Error al crear " + entity.getEntityName() + ": " + reason);
     }
 
     @Override
@@ -62,11 +62,11 @@ public class NotificationPrinter implements INotificationPrinter {
 
     @Override
     public void printListEmpty() {
-        consoleOutput.printMessage("No hay " + entity.getName() + "s para mostrar.");
+        consoleOutput.printMessage("No hay " + entity.getEntityName() + "s para mostrar.");
     }
 
     @Override
     public void printListSuccess(final int count) {
-        consoleOutput.printMessage("Se encontraron " + count + " " + entity.getName() + "s.");
+        consoleOutput.printMessage("Se encontraron " + count + " " + entity.getEntityName() + "s.");
     }
 }

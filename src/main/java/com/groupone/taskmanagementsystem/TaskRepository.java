@@ -39,7 +39,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Optional<TaskItem> updateTaskByIndex(final int index, final String updatedName) {
         return getTaskByIndex(index).map(task -> {
-            task.setName(updatedName);
+            task.setTitle(updatedName);
             return task;
         });
     }

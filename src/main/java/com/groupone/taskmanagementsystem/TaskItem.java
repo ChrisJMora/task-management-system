@@ -2,34 +2,50 @@ package com.groupone.taskmanagementsystem;
 
 public class TaskItem implements Identifiable {
 
-    private final int taskIndex;
+    public static final String ENTITY_NAME = "tarea";
 
-    private String taskName;
+    private int entityIndex;
 
-    public TaskItem(final int taskIndex, final String taskName) {
-        this.taskIndex = taskIndex;
-        this.taskName = taskName;
+    private String taskTitle;
+
+    public TaskItem(final int entityIndex, final String taskTitle) {
+        this.entityIndex = entityIndex;
+        this.taskTitle = taskTitle;
+    }
+
+    public TaskItem(final String taskTitle) {
+        this.entityIndex = 0;
+        this.taskTitle = taskTitle;
     }
 
     @Override
-    public int getIndex() {
-        return taskIndex;
+    public int getEntityIndex() {
+        return entityIndex;
+    }
+
+    public void setEntityIndex(final int entityIndex) {
+        this.entityIndex = entityIndex;
     }
 
     @Override
-    public String getName() {
-        return taskName;
+    public String getEntityName() {
+        return ENTITY_NAME;
     }
 
-    public void setName(final String taskName) {
-        this.taskName = taskName;
+    public String getTaskTitle() {
+        return taskTitle;
+    }
+
+    public void setTitle(final String taskTitle) {
+        this.taskTitle = taskTitle;
     }
 
     @Override
     public String toString() {
         return "TaskItem{" +
-                "id='" + taskIndex + '\'' +
-                "nombre='" + taskName + '\'' +
+                "id='" + entityIndex + '\'' +
+                "nombre='" + ENTITY_NAME + '\'' +
+                "título='" + taskTitle + '\'' +
                 '}';
     }
 }
