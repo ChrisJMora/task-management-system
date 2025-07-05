@@ -8,17 +8,17 @@ public class NotificationPrinter implements INotificationPrinter {
 
     private final String entityName;
 
-    public NotificationPrinter(final Class<? extends Identifiable> entity) {
+    public NotificationPrinter(final String entityName) {
         this.console = new SystemOutConsoleOutput();
-        this.entityName = entity.getName();
+        this.entityName = entityName;
     }
 
-    public NotificationPrinter(final Class<? extends Identifiable> entity, IConsoleOutput console) {
+    public NotificationPrinter(final String entityName, final IConsoleOutput console) {
         this.console = console;
-        this.entityName = entity.getName();
+        this.entityName = entityName;
     }
 
-    private String getEntityNameWithId(int entityIndex) {
+    private String getEntityNameWithId(final int entityIndex) {
         return entityName + " con " + ID_LABEL + " " + entityIndex;
     }
 
