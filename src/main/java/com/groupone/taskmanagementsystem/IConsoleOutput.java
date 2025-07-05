@@ -2,6 +2,6 @@ package com.groupone.taskmanagementsystem;
 
 public interface IConsoleOutput {
 
-    void printMessage(String message);
+    void print(String message);
 
 }

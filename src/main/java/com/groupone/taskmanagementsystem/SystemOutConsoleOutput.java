@@ -4,7 +4,7 @@ package com.groupone.taskmanagementsystem;
 public class SystemOutConsoleOutput implements IConsoleOutput {
 
     @Override
-    public void printMessage(final String message) {
+    public void print(final String message) {
         System.out.println(message);
     }
 
