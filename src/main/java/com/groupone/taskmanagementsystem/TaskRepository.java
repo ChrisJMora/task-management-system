@@ -30,16 +30,16 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public boolean addTask(final String taskName) {
-        final int newTaskIndex = tasks.size();
-        final TaskItem newTask = new TaskItem(newTaskIndex, taskName);
+    public boolean addTask(final TaskItem newTask) {
+        final int taskIndex = tasks.size();
+        newTask.setEntityIndex(taskIndex);
         return tasks.add(newTask);
     }
 
     @Override
-    public Optional<TaskItem> updateTaskByIndex(final int index, final String updatedName) {
+    public Optional<TaskItem> updateTaskByIndex(final int index, final String updatedTitle) {
         return getTaskByIndex(index).map(task -> {
-            task.setTitle(updatedName);
+            task.setTitle(updatedTitle);
             return task;
         });
     }

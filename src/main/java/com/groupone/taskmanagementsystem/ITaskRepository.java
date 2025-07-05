@@ -9,9 +9,9 @@ public interface ITaskRepository {
 
     List<TaskItem> getAllTasks();
 
-    boolean addTask(String taskName);
+    boolean addTask(TaskItem newTask);
 
-    Optional<TaskItem> updateTaskByIndex(int index, String updatedName);
+    Optional<TaskItem> updateTaskByIndex(int index, String updatedTitle);
 
     boolean removeTaskByIndex(int index);
 
