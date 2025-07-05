@@ -33,7 +33,7 @@ class TaskItemTest {
     @Test
     void testToString() {
         final TaskItem task = new TaskItem("Escribir test");
-        final String expected = "TaskItem{nombre='Escribir test'}";
+        final String expected = "TaskItem{id='0'nombre='Escribir test'}";
         assertEquals(expected, task.toString(), "El método toString debe seguir el formato TaskItem{nombre='...'}");
     }
 }
