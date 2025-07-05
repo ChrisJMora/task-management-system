@@ -32,7 +32,7 @@ class NotificationPrinterTest {
         }
 
         @Override
-        public int getId() {
+        public int getIndex() {
             return entityId;
         }
 
