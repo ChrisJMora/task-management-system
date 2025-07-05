@@ -24,10 +24,10 @@ class SystemOutConsoleOutputTest {
     }
 
     @Test
-    void testPrintMessage() {
+    void testPrint() {
         final String testMessage = "Hola mundo";
 
-        consoleOutput.printMessage(testMessage);
+        consoleOutput.print(testMessage);
 
         // Comprobar que la salida contiene el mensaje esperado seguido de salto de línea
         assertEquals(testMessage + System.lineSeparator(),
