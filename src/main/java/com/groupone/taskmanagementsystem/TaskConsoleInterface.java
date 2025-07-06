@@ -18,6 +18,14 @@ public class TaskConsoleInterface {
         this.notification = new NotificationPrinter(TaskItem.ENTITY_NAME);
     }
 
+    public TaskConsoleInterface(final Scanner scanner, final ITaskService taskService,
+                                final ITaskConsoleView view, final INotificationPrinter notification) {
+        this.scanner = scanner;
+        this.taskService = taskService;
+        this.view = view;
+        this.notification = notification;
+    }
+
     public void start() {
         view.printWelcomeMessage();
         boolean running = true;
@@ -48,7 +56,7 @@ public class TaskConsoleInterface {
         view.printGoodbye();
     }
 
-    private void createTask() {
+    /* default */ void createTask() {
         view.promptTaskName();
         final String taskTitle = scanner.nextLine().trim();
 
@@ -61,7 +69,7 @@ public class TaskConsoleInterface {
         }
     }
 
-    private void listTasks() {
+    /* default */ void listTasks() {
         try {
             final Collection<TaskItem> tasks = taskService.getTaskCollection();
             view.printTaskList(tasks);
@@ -70,7 +78,7 @@ public class TaskConsoleInterface {
         }
     }
 
-    private void updateTask() {
+    /* default */ void updateTask() {
         view.promptTaskIndexToUpdate();
         final int index = readIntInput();
 
@@ -85,7 +93,7 @@ public class TaskConsoleInterface {
         }
     }
 
-    private void deleteTask() {
+    /* default */ void deleteTask() {
         view.promptTaskIndexToDelete();
         final int index = readIntInput();
 
@@ -97,7 +105,7 @@ public class TaskConsoleInterface {
         }
     }
 
-    private int readIntInput() {
+    /* default */ int readIntInput() {
         int result = -1;
         try {
             result = Integer.parseInt(scanner.nextLine().trim());
