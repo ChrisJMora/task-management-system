@@ -32,6 +32,8 @@ jobs:
       # Paso 1: Clonar el repositorio
       - name: Checkout del código
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Clona todo el historial para análisis más precisos
 
       # Paso 2: Configurar Java 11
       - name: Configurar Java
@@ -46,7 +48,7 @@ jobs:
 
       # Paso 4: Subir el JAR como artefacto descargable
       - name: Subir JAR como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-jar
           path: target/*.jar
