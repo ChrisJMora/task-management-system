@@ -11,7 +11,7 @@ public interface ITaskValidator {
 
     boolean isValidForRemove(int taskIndex);
 
-    boolean isCollectionEmpty(Collection<TaskItem> taskItemCollection);
+    boolean isCollectionEmpty(Collection<TaskItem> taskCollection);
 
     boolean isOptionalEmpty(Optional<TaskItem> optionalTaskItem);
 }
