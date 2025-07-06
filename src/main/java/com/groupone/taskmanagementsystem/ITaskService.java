@@ -4,14 +4,14 @@ import java.util.Collection;
 
 public interface ITaskService {
 
-    Collection<TaskItem> getTaskCollection() throws Exception;
+    Collection<TaskItem> getTaskCollection();
 
-    TaskItem getTaskByIndex(int taskIndex) throws Exception;
+    TaskItem getTaskByIndex(int taskIndex);
 
-    void addTask(TaskItem newTask) throws Exception;
+    void addTask(TaskItem newTask);
 
-    TaskItem updateTaskByIndex(int taskIndex, String newTaskName) throws Exception;
+    TaskItem updateTaskByIndex(int taskIndex, String newTaskName);
 
-    void removeTaskByIndex(int taskIndex) throws Exception;
+    void removeTaskByIndex(int taskIndex);
 
 }

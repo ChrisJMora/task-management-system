@@ -2,6 +2,7 @@ package com.groupone.taskmanagementsystem;
 
 import java.util.Collection;
 
+@SuppressWarnings({"PMD.TooManyMethods", "PMD.LawOfDemeter"})
 public class TaskService implements ITaskService {
 
     private final ITaskRepository taskRepository;
@@ -19,7 +20,7 @@ public class TaskService implements ITaskService {
 
     @Override
     public Collection<TaskItem> getTaskCollection() {
-        Collection<TaskItem> tasks = taskRepository.getAllTasks();
+        final Collection<TaskItem> tasks = taskRepository.getAllTasks();
         if (taskValidator.isCollectionEmpty(tasks)) {
             throwCollectionEmpty();
         }
@@ -56,7 +57,7 @@ public class TaskService implements ITaskService {
             throwInvalidRemove();
         }
 
-        boolean removed = taskRepository.removeTaskByIndex(taskIndex);
+        final boolean removed = taskRepository.removeTaskByIndex(taskIndex);
         if (!removed) {
             throwDeleteFailed(taskIndex);
         }
@@ -78,15 +79,15 @@ public class TaskService implements ITaskService {
         throw new IllegalStateException("No hay tareas registradas.");
     }
 
-    private IllegalStateException throwNotFound(int index) {
+    private IllegalStateException throwNotFound(final int index) {
         return new IllegalStateException("No se encontró ninguna tarea en el índice " + index + ".");
     }
 
-    private IllegalStateException throwUpdateFailed(int index) {
+    private IllegalStateException throwUpdateFailed(final int index) {
         return new IllegalStateException("No se pudo actualizar la tarea con índice " + index + ".");
     }
 
-    private void throwDeleteFailed(int index) {
+    private void throwDeleteFailed(final int index) {
         throw new IllegalStateException("No se pudo eliminar la tarea con índice " + index + ".");
     }
 }
