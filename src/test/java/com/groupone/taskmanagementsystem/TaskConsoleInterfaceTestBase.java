@@ -1,84 +1,32 @@
 package com.groupone.taskmanagementsystem;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+@SuppressWarnings({"PMD.AtLeastOneConstructor"})
+public class TaskConsoleInterfaceTestBase {
+    @Mock protected ITaskService taskService;
+    @Mock protected ITaskConsoleView view;
+    @Mock protected INotificationPrinter notification;
 
-@SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
-class TaskConsoleInterfaceFlowTest {
-
-    private TaskConsoleInterface consoleInterface;
-    private Scanner mockScanner;
-    private ITaskService mockTaskService;
-    private ITaskConsoleView mockView;
-    private INotificationPrinter mockNotification;
+    protected TaskConsoleInterface consoleInterface;
+    protected Scanner scanner;
 
     @BeforeEach
     void setUp() {
-        mockScanner = mock(Scanner.class);
-        mockTaskService = mock(ITaskService.class);
-        mockView = mock(ITaskConsoleView.class);
-        mockNotification = mock(INotificationPrinter.class);
-        consoleInterface = new TaskConsoleInterface() {
-            @Override
-            Scanner getScanner() {
-                return mockScanner;
-            }
-
-            @Override
-            ITaskService getTaskService() {
-                return mockTaskService;
-            }
-
-            @Override
-            ITaskConsoleView getView() {
-                return mockView;
-            }
-
-            @Override
-            INotificationPrinter getNotification() {
-                return mockNotification;
-            }
-        };
+        MockitoAnnotations.openMocks(this);
+        // Configurar un scanner por defecto que puede ser sobrescrito en tests específicos
+        scanner = new Scanner(new ByteArrayInputStream("1\n".getBytes()));
+        consoleInterface = new TaskConsoleInterface(scanner, taskService, view, notification);
     }
 
-    @Test
-    void startPrintsWelcomeMessage() {
-        when(mockScanner.nextLine()).thenReturn("5");
-
-        consoleInterface.start();
-
-        assertTrue(true, "Debe imprimir el mensaje de bienvenida al iniciar");
-    }
-
-    @Test
-    void startExitsOnOptionFive() {
-        when(mockScanner.nextLine()).thenReturn("5");
-
-        consoleInterface.start();
-
-        assertTrue(true, "Debe salir del programa al seleccionar la opción 5");
-    }
-
-    @Test
-    void startHandlesInvalidOption() {
-        when(mockScanner.nextLine()).thenReturn("invalid", "5");
-
-        consoleInterface.start();
-
-        assertTrue(true, "Debe manejar una opción no válida correctamente");
-    }
-
-    @Test
-    void startInvokesCreateTaskForOptionOne() {
-        when(mockScanner.nextLine()).thenReturn("1", "5");
-
-        consoleInterface.start();
-
-        assertTrue(true, "Debe invocar la creación de tarea para la opción 1");
+    protected void setInput(final String input) {
+        final InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        scanner = new Scanner(inputStream);
+        consoleInterface = new TaskConsoleInterface(scanner, taskService, view, notification);
     }
 }
