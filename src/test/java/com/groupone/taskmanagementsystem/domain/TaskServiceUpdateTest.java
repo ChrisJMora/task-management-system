@@ -10,15 +10,48 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Clase de pruebas unitarias para las operaciones de actualización de tareas en TaskService.
+ * <p>
+ * Esta clase contiene pruebas que verifican el comportamiento correcto
+ * del método updateTaskByIndex de la clase TaskService, incluyendo casos
+ * de validación, manejo de errores y operaciones exitosas.
+ * </p>
+ *
+ * @author Group One
+ * @version 1.0
+ * @since 1.0
+ */
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
 class TaskServiceUpdateTest {
 
+    /**
+     * Constante que representa un nombre de tarea válido para las pruebas.
+     */
     private static final String VALID_TASK_NAME = "Nuevo nombre";
 
+    /**
+     * Instancia del servicio de tareas bajo prueba.
+     */
     private TaskService service;
+
+    /**
+     * Mock del repositorio de tareas.
+     */
     private ITaskRepository mockRepository;
+
+    /**
+     * Mock del validador de tareas.
+     */
     private ITaskValidator mockValidator;
 
+    /**
+     * Configuración inicial antes de cada prueba.
+     * <p>
+     * Se crean los mocks necesarios y se inicializa el servicio de tareas
+     * con las dependencias mockeadas.
+     * </p>
+     */
     @BeforeEach
     void setUp() {
         mockRepository = mock(ITaskRepository.class);
@@ -26,6 +59,9 @@ class TaskServiceUpdateTest {
         service = new TaskService(mockRepository, mockValidator);
     }
 
+    /**
+     * Verifica que se lanza IllegalArgumentException cuando los datos no son válidos.
+     */
     @Test
     void updateTaskByIndexWhenInvalidThrowsIllegalArgumentException() {
         when(mockValidator.isValidForUpdate(0, VALID_TASK_NAME)).thenReturn(false);
@@ -34,6 +70,9 @@ class TaskServiceUpdateTest {
                 "Debe lanzar IllegalArgumentException cuando los datos no son válidos");
     }
 
+    /**
+     * Verifica que el mensaje de error es correcto cuando los datos no son válidos.
+     */
     @Test
     void updateTaskByIndexWhenInvalidHasCorrectErrorMessage() {
         when(mockValidator.isValidForUpdate(0, VALID_TASK_NAME)).thenReturn(false);
@@ -47,6 +86,9 @@ class TaskServiceUpdateTest {
         }
     }
 
+    /**
+     * Verifica que se lanza IllegalStateException cuando no se encuentra la tarea.
+     */
     @Test
     void updateTaskByIndexWhenNotFoundThrowsIllegalStateException() {
         when(mockValidator.isValidForUpdate(0, VALID_TASK_NAME)).thenReturn(true);
@@ -56,6 +98,9 @@ class TaskServiceUpdateTest {
                 "Debe lanzar IllegalStateException cuando no se encuentra la tarea");
     }
 
+    /**
+     * Verifica que el mensaje de error es correcto cuando no se encuentra la tarea.
+     */
     @Test
     void updateTaskByIndexWhenNotFoundHasCorrectErrorMessage() {
         when(mockValidator.isValidForUpdate(0, VALID_TASK_NAME)).thenReturn(true);
@@ -70,6 +115,9 @@ class TaskServiceUpdateTest {
         }
     }
 
+    /**
+     * Verifica que se devuelve la tarea actualizada cuando la operación es exitosa.
+     */
     @Test
     void updateTaskByIndexWhenValidReturnsUpdatedTask() {
         final TaskItem updatedTask = new TaskItem(0, VALID_TASK_NAME);

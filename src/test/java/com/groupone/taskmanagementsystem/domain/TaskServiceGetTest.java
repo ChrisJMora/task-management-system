@@ -11,13 +11,43 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Clase de pruebas unitarias para las operaciones de obtención de tareas en TaskService.
+ * <p>
+ * Esta clase contiene pruebas que verifican el comportamiento correcto
+ * de los métodos getTaskCollection y getTaskByIndex de la clase TaskService,
+ * incluyendo casos de éxito y manejo de errores.
+ * </p>
+ *
+ * @author Group One
+ * @version 1.0
+ * @since 1.0
+ */
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.LawOfDemeter"})
 class TaskServiceGetTest {
 
+    /**
+     * Instancia del servicio de tareas bajo prueba.
+     */
     private TaskService service;
+
+    /**
+     * Mock del repositorio de tareas.
+     */
     private ITaskRepository mockRepository;
+
+    /**
+     * Mock del validador de tareas.
+     */
     private ITaskValidator mockValidator;
 
+    /**
+     * Configuración inicial antes de cada prueba.
+     * <p>
+     * Se crean los mocks necesarios y se inicializa el servicio de tareas
+     * con las dependencias mockeadas.
+     * </p>
+     */
     @BeforeEach
     void setUp() {
         mockRepository = mock(ITaskRepository.class);
@@ -25,6 +55,9 @@ class TaskServiceGetTest {
         service = new TaskService(mockRepository, mockValidator);
     }
 
+    /**
+     * Verifica que se lanza IllegalStateException cuando la colección está vacía.
+     */
     @Test
     void taskCollectionWhenEmptyThrowsIllegalStateException() {
         final List<TaskItem> emptyList = List.of();
@@ -35,6 +68,9 @@ class TaskServiceGetTest {
                 "Debe lanzar IllegalStateException cuando no hay tareas registradas");
     }
 
+    /**
+     * Verifica que el mensaje de error es correcto cuando la colección está vacía.
+     */
     @Test
     void taskCollectionWhenEmptyHasCorrectErrorMessage() {
         final List<TaskItem> emptyList = List.of();
@@ -50,6 +86,9 @@ class TaskServiceGetTest {
         }
     }
 
+    /**
+     * Verifica que se devuelven las tareas cuando la colección no está vacía.
+     */
     @Test
     void taskCollectionWhenNotEmptyReturnsTasks() {
         final List<TaskItem> tasks = List.of(new TaskItem(0, "Tarea 1"));
@@ -61,6 +100,9 @@ class TaskServiceGetTest {
         assertEquals(1, result.size(), "Debe retornar una lista con una tarea");
     }
 
+    /**
+     * Verifica que se lanza IllegalStateException cuando no se encuentra la tarea por índice.
+     */
     @Test
     void taskByIndexWhenNotFoundThrowsIllegalStateException() {
         when(mockRepository.getTaskByIndex(42)).thenReturn(Optional.empty());
@@ -69,6 +111,9 @@ class TaskServiceGetTest {
                 "Debe lanzar IllegalStateException cuando no se encuentra la tarea");
     }
 
+    /**
+     * Verifica que el mensaje de error es correcto cuando no se encuentra la tarea por índice.
+     */
     @Test
     void taskByIndexWhenNotFoundHasCorrectErrorMessage() {
         when(mockRepository.getTaskByIndex(42)).thenReturn(Optional.empty());
