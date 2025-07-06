@@ -1,5 +1,7 @@
 package com.groupone.taskmanagementsystem;
 
+import com.groupone.taskmanagementsystem.views.TaskConsoleInterface;
+
 @SuppressWarnings({"PMD.AtLeastOneConstructor", "PMD.UseUtilityClass"})
 public final class MainApp {
 
