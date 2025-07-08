@@ -42,7 +42,7 @@ public class TaskConsoleView implements ITaskConsoleView {
      */
     @Override
     public void printWelcomeMessage() {
-        console.print("=== SISTEMA DE GESTIÓN DE TAREAS ===");
+        console.print("=== SISTEMA DE GESTIÓN DE TAREAS [CAMBIO] ===");
     }
 
     /**
